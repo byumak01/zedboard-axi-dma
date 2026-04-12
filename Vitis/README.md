@@ -3,45 +3,40 @@ Vitis Project files
 
 ### How to build the Vitis workspace
 
-In order to make use of these source files, you must first generate
-the Vivado project hardware design (the bitstream) and export the hardware.
-Check the `Vivado` folder for instructions on doing this from Vivado.
+This 2025.2 port uses the Vitis Python CLI instead of the older `xsct` flow.
 
-Once the bitstream is generated and exported, then you can build the
-Vitis workspace using the provided `build-vitis.tcl` script.
+Before building the Vitis workspace, you must already have an exported XSA from
+the Vivado project. The expected path is:
+
+`../Vivado/export/zedboard_axi_dma.xsa`
+
+If that file is not present, the script will search under `../Vivado` and use the
+most recent `.xsa` it finds.
 
 ### Scripted build
 
-The Vitis directory contains a `build-vitis.tcl` script which can be run to automatically
-generate the Vitis workspace. Windows users can run the `build-vitis.bat` file which
-launches the Tcl script. Linux users must use the following commands to run the build
-script:
+Linux:
 ```
 cd <path-to-repo>/Vitis
-/<path-to-xilinx-tools>/Vitis/2019.2/bin/xsct build-vitis.tcl
+./build-vitis.sh
 ```
 
-The build script does three things:
+Windows:
+```
+build-vitis.bat
+```
 
-1. Generates a Hello World example application for each exported Vivado design
-that is found in the ../Vivado directory. Most users will only have one exported
-Vivado design.
-2. Deletes the `helloworld.c` source file from the application.
-3. Copies the `xaxidma_example_sg_poll.c` source from `Vitis\common\src`.
-This example application originates from the Vitis installation here:
-`C:\Xilinx\Vitis\<version>\data\embeddedsw\XilinxProcessorIPLib\drivers\axidma_v<ver>\examples\xaxidma_example_sg_poll.c`
+The build script does four things:
+
+1. Creates a fresh Vitis workspace in `Vitis/workspace`.
+2. Creates a standalone platform component from the exported XSA.
+3. Adds a `ps7_cortexa9_0` standalone domain.
+4. Creates an empty application, imports `common/src/xaxidma_example_sg_poll.c`, and builds it.
 
 ### Run the application
 
-1. Open Xilinx Vitis.
-2. Power up your hardware platform and ensure that the JTAG is
-connected properly.
-3. Select Xilinx Tools->Program FPGA. You only have to do this
-once, each time you power up your hardware platform.
-4. Click Run from the toolbar to run your application. You can modify the code
-and click Run as many times as you like, without going through
-the other steps.
-
-For more detailed information about running this application, please refer to the following tutorial:
-
-http://www.fpgadeveloper.com/2014/08/using-the-axi-dma-in-vivado.html
+1. Build and export the Vivado hardware platform first.
+2. Run the Vitis build script above.
+3. Open Vitis with the workspace at `Vitis/workspace`.
+4. Program the FPGA with the bitstream from the exported XSA.
+5. Run the `zedboard_axi_dma_test_app` application.

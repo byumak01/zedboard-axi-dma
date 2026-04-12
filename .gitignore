@@ -2,8 +2,11 @@ Vivado/.Xil/
 *.log
 *.jou
 Vivado/*_axi_dma/
+Vivado/export/
 Vitis/.*/
 Vitis/.analytics
+Vitis/__pycache__/
+Vitis/workspace/
 Vitis/boot/
 Vitis/*_axi_dma*/
 Vitis/*_test_app*/

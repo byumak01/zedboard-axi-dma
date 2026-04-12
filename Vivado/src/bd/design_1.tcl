@@ -39,7 +39,8 @@ current_bd_instance $parentObj
 
 # Add the Processor System and apply board preset
 create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7 processing_system7_0
-apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" apply_board_preset "1" Master "Disable" Slave "Disable" }  [get_bd_cells processing_system7_0]
+apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" apply_board_preset "0" Master "Disable" Slave "Disable" }  [get_bd_cells processing_system7_0]
+set_property -dict [list CONFIG.PCW_IMPORT_BOARD_PRESET {ZedBoard}] [get_bd_cells processing_system7_0]
 
 # Configure the PS: Generate 100MHz clock, Enable GP0 and HP0, Enable interrupts
 set_property -dict [list CONFIG.PCW_USE_S_AXI_HP0 {1} CONFIG.PCW_USE_M_AXI_GP0 {1} CONFIG.PCW_USE_FABRIC_INTERRUPT {1} CONFIG.PCW_IRQ_F2P_INTR {1}] [get_bd_cells processing_system7_0]

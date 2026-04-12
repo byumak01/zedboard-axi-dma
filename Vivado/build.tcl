@@ -4,8 +4,8 @@
 #*****************************************************************************************
 
 # Check the version of Vivado used
-set version_required "2020.2"
-set ver [lindex [split $::env(XILINX_VIVADO) /] end]
+set version_required "2025.2"
+set ver [version -short]
 if {![string equal $ver $version_required]} {
   puts "###############################"
   puts "### Failed to build project ###"
@@ -33,7 +33,12 @@ set proj_dir [get_property directory [current_project]]
 
 # Set project properties
 set obj [get_projects $design_name]
-set_property -name "board_part" -value "em.avnet.com:zed:part0:1.4" -objects $obj
+set zed_board_part "em.avnet.com:zed:part0:1.4"
+if {[llength [get_board_parts -quiet $zed_board_part]] > 0} {
+  set_property -name "board_part" -value $zed_board_part -objects $obj
+} else {
+  puts "INFO: Board part $zed_board_part not installed. Using the built-in ZedBoard PS preset instead."
+}
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
 set_property -name "ip_output_repo" -value "$proj_dir/$design_name.cache/ip" -objects $obj
@@ -76,25 +81,9 @@ set obj [get_filesets sim_1]
 set obj [get_filesets sim_1]
 set_property "top" "${design_name}_wrapper" $obj
 
-# Create 'synth_1' run (if not found)
-if {[string equal [get_runs -quiet synth_1] ""]} {
-  create_run -name synth_1 -part xc7z020clg484-1 -flow {Vivado Synthesis 2020} -strategy "Vivado Synthesis Defaults" -constrset constrs_1
-} else {
-  set_property strategy "Vivado Synthesis Defaults" [get_runs synth_1]
-  set_property flow "Vivado Synthesis 2020" [get_runs synth_1]
-}
-set obj [get_runs synth_1]
-
 # set the current synth run
 current_run -synthesis [get_runs synth_1]
 
-# Create 'impl_1' run (if not found)
-if {[string equal [get_runs -quiet impl_1] ""]} {
-  create_run -name impl_1 -part xc7z020clg484-1 -flow {Vivado Implementation 2020} -strategy "Vivado Implementation Defaults" -constrset constrs_1 -parent_run synth_1
-} else {
-  set_property strategy "Vivado Implementation Defaults" [get_runs impl_1]
-  set_property flow "Vivado Implementation 2020" [get_runs impl_1]
-}
 set obj [get_runs impl_1]
 set_property -name "steps.write_bitstream.args.readback_file" -value "0" -objects $obj
 set_property -name "steps.write_bitstream.args.verbose" -value "0" -objects $obj
@@ -120,4 +109,3 @@ close_bd_design [current_bd_design]
 open_bd_design [get_files ${design_name}.bd]
 validate_bd_design -force
 save_bd_design
-

@@ -1,6 +1,7 @@
 @ECHO OFF
+setlocal
 
-setlocal ENABLEDELAYEDEXPANSION
-SET vitis=C:\Xilinx\Vitis\2020.2\bin\xsct.bat
-cmd /c "%vitis% build-vitis.tcl"
+IF "%XILINX_VITIS%"=="" SET XILINX_VITIS=C:\Xilinx\Vitis\2025.2
+CALL "%XILINX_VITIS%\cli\examples\customer_python_utils\setup_vitis_env.bat"
+"%XILINX_VITIS%\bin\vitis.bat" -s build-vitis.py
 pause

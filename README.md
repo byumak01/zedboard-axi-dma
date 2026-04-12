@@ -5,12 +5,10 @@ Demonstration project for the AXI DMA Engine on the ZedBoard
 
 ## Requirements
 
-This project is designed for Vivado 2020.2. If you are using an older version of Vivado, then you *MUST* use an older version
-of this repository. Refer to the [list of commits](https://github.com/fpgadeveloper/zedboard-axi-dma/commits/master "list of commits")
-to find links to the older versions of this repository.
+This port is designed for Vivado 2025.2 and Vitis 2025.2.
 
-* Vivado 2020.2
-* Vitis 2020.2
+* Vivado 2025.2
+* Vitis 2025.2
 * [ZedBoard](http://zedboard.org "ZedBoard")
 
 ## Description
@@ -23,47 +21,47 @@ http://www.fpgadeveloper.com/2014/08/using-the-axi-dma-in-vivado.html
 
 ## Build instructions
 
-To use the sources in this repository, please follow these steps:
+This port does not require you to create Vivado or Vitis projects by hand.
 
-1. Download the repo as a zip file and extract the files to a directory
-   on your hard drive --OR-- Git users: clone the repo to your hard drive
-2. Open Windows Explorer, browse to the repo files on your hard drive.
-3. In the Vivado directory, you will find multiple batch files (*.bat).
-   Double click on the batch file that is appropriate to your hardware,
-   for example, double-click `build-zedboard.bat` if you are using the ZedBoard.
-   This will generate a Vivado project for your hardware platform.
-4. Run Vivado and open the project that was just created.
-5. Click Generate bitstream.
-6. When the bitstream is successfully generated, select `File->Export->Export Hardware`.
-   In the window that opens, tick "Include bitstream" and "Local to project".
-7. Return to Windows Explorer and browse to the Vitis directory in the repo.
-8. Double click the `build-vitis.bat` batch file. The batch file will run the
-   `build-vitis.tcl` script and build the Vitis workspace containing the hardware
-   design and the software application.
-9. Run Vitis and select the workspace to be the Vitis directory of the repo.
-10. Connect and power up the hardware.
-11. Open a Putty terminal to view the UART output.
-12. In the Vitis, select `Xilinx Tools->Program FPGA`.
-13. Click on the application and click the Run icon from the toolbar.
+### Linux
 
-This project uses an example application for the AXI DMA that is located here:
+1. Create the Vivado project:
+   ```
+   cd Vivado
+   ./build.sh
+   ```
+2. Build the bitstream and export the XSA:
+   ```
+   ./build-bitstream.sh
+   ```
+3. Build the Vitis workspace, platform, and application:
+   ```
+   cd ../Vitis
+   ./build-vitis.sh
+   ```
+4. Open Vitis and select `Vitis/workspace` as the workspace.
+5. Connect and power the ZedBoard.
+6. Program the FPGA and run `zedboard_axi_dma_test_app`.
 
-`C:\Xilinx\Vitis\<version>\data\embeddedsw\XilinxProcessorIPLib\drivers\axidma_v<ver>\examples\xaxidma_example_sg_poll.c`
+### Windows
 
-The Vitis build script creates an application and copies that source file into the application.
-See the readme in the Vitis directory for more information.
+1. Run `Vivado\\build.bat` to create the Vivado project.
+2. Run `vivado -mode batch -source build-bitstream.tcl` from the `Vivado` directory.
+3. Run `Vitis\\build-vitis.bat` to create the Vitis workspace.
+
+The hardware project is created against the Zynq part directly. If you do not have the old
+Avnet ZedBoard board file installed, the build still works because the script imports the
+built-in `ZedBoard` PS preset instead of relying on `em.avnet.com:zed:part0:1.4`.
 
 ## Troubleshooting
 
 Check the following if the project fails to build or generate a bitstream:
 
-### 1. Are you using the correct version of Vivado for this version of the repository?
-Check the version specified in the Requirements section of this readme file. Note that this project is regularly maintained to the latest
-version of Vivado and you may have to refer to an earlier commit of this repo if you are using an older version of Vivado.
+### 1. Are you using the correct tool versions?
+Check the version specified in the Requirements section of this readme file.
 
-### 2. Did you follow the Build instructions in this readme file?
-All the projects in the repo are built, synthesised and implemented to a bitstream before being committed, so if you follow the
-instructions, there should not be any build issues.
+### 2. Did you run the scripted flow in order?
+Create the Vivado project first, then build/export the XSA, then run the Vitis build script.
 
 ### 3. Did you copy/clone the repo into a short directory structure?
 Vivado doesn't cope well with long directory structures, so copy/clone the repo into a short directory structure such as
