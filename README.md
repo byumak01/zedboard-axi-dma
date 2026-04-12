@@ -3,6 +3,37 @@ zedboard-axi-dma
 
 Demonstration project for the AXI DMA Engine on the ZedBoard
 
+## Quick start
+
+Use JTAG for the first bring-up. You do not need an SD card or `BOOT.BIN`.
+
+1. Build the hardware and software:
+   ```
+   cd Vivado
+   ./build.sh
+   ./build-bitstream.sh
+   cd ../Vitis
+   ./build-vitis.sh
+   ```
+2. Set the ZedBoard boot mode to `JTAG`.
+3. Connect the board power and the JTAG/UART USB cable.
+4. Open Vitis with workspace `Vitis/workspace`.
+5. Run the generated hardware launch configuration `zedboard_axi_dma_test_app_app_hw_1`.
+   This launch programs the bitstream, runs the FSBL, and downloads `zedboard_axi_dma_test_app.elf`.
+6. Open the UART at `115200 8N1` and confirm you see:
+   ```
+   --- ZedBoard USB DMA bridge ---
+   ```
+7. Connect the ZedBoard OTG USB port to the host PC and run:
+   ```
+   python3 -m pip install pyusb
+   python3 tools/usb_bulk_loopback.py --text "test packet"
+   ```
+8. Expected host output:
+   ```
+   loopback ok
+   ```
+
 ## Requirements
 
 This port is designed for Vivado 2025.2 and Vitis 2025.2.
@@ -18,6 +49,14 @@ data between a custom IP block and memory. A tutorial for recreating this projec
 from the Vivado GUI can be found here:
 
 http://www.fpgadeveloper.com/2014/08/using-the-axi-dma-in-vivado.html
+
+The current fork also includes a standalone USB bulk bridge app for the ZedBoard
+OTG port. The data path is:
+
+`host PC USB bulk OUT -> Zynq PS USB controller -> DDR buffer -> AXI DMA -> PL loopback FIFO -> AXI DMA -> USB bulk IN`
+
+The PL side is still the original DMA loopback path, so this is a bring-up
+reference for moving host USB data into PL and back out again.
 
 ## Build instructions
 
@@ -42,6 +81,11 @@ This port does not require you to create Vivado or Vitis projects by hand.
 4. Open Vitis and select `Vitis/workspace` as the workspace.
 5. Connect and power the ZedBoard.
 6. Program the FPGA and run `zedboard_axi_dma_test_app`.
+7. Connect the ZedBoard OTG USB port to the host and run the host loopback tool:
+   ```
+   python3 -m pip install pyusb
+   python3 tools/usb_bulk_loopback.py --text "test packet"
+   ```
 
 ### Windows
 
@@ -52,6 +96,36 @@ This port does not require you to create Vivado or Vitis projects by hand.
 The hardware project is created against the Zynq part directly. If you do not have the old
 Avnet ZedBoard board file installed, the build still works because the script imports the
 built-in `ZedBoard` PS preset instead of relying on `em.avnet.com:zed:part0:1.4`.
+
+## USB bridge notes
+
+The USB bridge firmware enumerates as a vendor-specific bulk device with:
+
+* VID `0x0D7D`
+* PID `0x0200`
+* Interface `0`
+* Bulk OUT endpoint `0x01`
+* Bulk IN endpoint `0x81`
+
+The current firmware accepts payloads up to 512 bytes and echoes the DMA
+loopback result back to the host.
+
+## References used for the USB port
+
+The USB app in this fork follows AMD's 2025.2 `xusbps` device-mode example
+structure for SDT lookup, endpoint configuration, and interrupt wiring, plus
+the chapter-9 helper patterns from the storage example:
+
+* `xusbps_intr_example.c`
+* `xusbps_ch9_storage.c`
+* `xusbps_ch9_storage.h`
+
+Useful ZedBoard GitHub references while porting:
+
+* `lvgl/lv_port_xilinx_zedboard_vitis` for Zynq USB usage on ZedBoard in Vitis
+* `giuseppewebber/FPGA_video_processing` for the broader `USB on PS -> DMA -> PL`
+  architecture, although that project is Linux/webcam-based rather than this
+  standalone bulk bridge
 
 ## Troubleshooting
 
