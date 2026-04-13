@@ -5,7 +5,7 @@ module hd_dma_stream_bridge #(
     parameter integer MAX_STEPS = 56
 ) (
     (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 aclk CLK" *)
-    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF S_AXIS:M_AXIS, ASSOCIATED_RESET aresetn, FREQ_HZ 100000000" *)
+    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF S_AXIS:M_AXIS, ASSOCIATED_RESET aresetn" *)
     input  wire                        aclk,
 
     (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 aresetn RST" *)
@@ -261,8 +261,10 @@ module hd_dma_stream_bridge #(
                         if (in_word_index == (AXIS_KEEP_WIDTH - 1)) begin
                             in_word_valid <= 1'b0;
                             in_word_index <= 3'd0;
-                            if (in_word_last &&
-                                (frame_payload_done ||
+                            // Kick off execution once the advertised payload length has
+                            // been consumed. Relying on TLAST here can wedge the bridge
+                            // if the upstream MM2S source does not propagate EOF/TLAST.
+                            if ((frame_payload_done ||
                                  ((step_byte_index == (STEP_INPUT_BYTES - 1)) &&
                                   in_word_keep[in_word_index] &&
                                   ((step_store_index + 1'b1) == batch_step_count))) &&
@@ -327,6 +329,11 @@ module hd_dma_stream_bridge #(
                         proc_step_index <= proc_step_index + 1'b1;
                         state           <= ST_PROC_LOAD;
                     end
+                end
+
+                ST_SEND: begin
+                    nn_rst_reg <= 1'b0;
+                    nn_en      <= 1'b0;
                 end
 
                 default: begin

@@ -44,6 +44,7 @@ set_property -dict [list CONFIG.PCW_IMPORT_BOARD_PRESET {ZedBoard}] [get_bd_cell
 
 # Configure the PS: Generate 100MHz clock, Enable GP0 and HP0, Enable interrupts
 set_property -dict [list CONFIG.PCW_USE_S_AXI_HP0 {1} CONFIG.PCW_USE_M_AXI_GP0 {1} CONFIG.PCW_USE_FABRIC_INTERRUPT {1} CONFIG.PCW_IRQ_F2P_INTR {1}] [get_bd_cells processing_system7_0]
+set_property -dict [list CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {50.000000}] [get_bd_cells processing_system7_0]
 
 # Connect the FCLK_CLK0 to the PS GP0
 connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]
@@ -65,7 +66,13 @@ apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Slave "/processing_sy
 create_bd_cell -type module -reference hd_dma_stream_bridge hd_dma_stream_bridge_0
 connect_bd_intf_net [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S] [get_bd_intf_pins hd_dma_stream_bridge_0/S_AXIS]
 connect_bd_intf_net [get_bd_intf_pins hd_dma_stream_bridge_0/M_AXIS] [get_bd_intf_pins axi_dma_0/S_AXIS_S2MM]
-connect_bd_net -net [get_bd_nets rst_ps7_0_100M_peripheral_aresetn] [get_bd_pins hd_dma_stream_bridge_0/aresetn] [get_bd_pins rst_ps7_0_100M/peripheral_aresetn]
+set ps_reset_cells [get_bd_cells -quiet -hier -filter {VLNV =~ "xilinx.com:ip:proc_sys_reset:*"}]
+if {[llength $ps_reset_cells] > 0} {
+   set ps_reset_cell [lindex $ps_reset_cells 0]
+   connect_bd_net [get_bd_pins hd_dma_stream_bridge_0/aresetn] [get_bd_pins ${ps_reset_cell}/peripheral_aresetn]
+} else {
+   connect_bd_net [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins hd_dma_stream_bridge_0/aresetn]
+}
 connect_bd_net -net [get_bd_nets processing_system7_0_FCLK_CLK0] [get_bd_pins hd_dma_stream_bridge_0/aclk] [get_bd_pins processing_system7_0/FCLK_CLK0]
 
 # Connect interrupts

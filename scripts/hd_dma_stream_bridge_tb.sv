@@ -163,7 +163,7 @@ module hd_dma_stream_bridge_tb;
         end
     endtask
 
-    task automatic send_request;
+    task automatic send_request(input bit assert_tlast);
         integer req_idx;
         integer lane;
         reg [31:0] word_data;
@@ -186,7 +186,7 @@ module hd_dma_stream_bridge_tb;
                 @(posedge clk);
                 s_axis_tdata  = word_data;
                 s_axis_tkeep  = word_keep;
-                s_axis_tlast  = ((req_idx + valid_bytes) >= REQUEST_BYTES);
+                s_axis_tlast  = assert_tlast && ((req_idx + valid_bytes) >= REQUEST_BYTES);
                 s_axis_tvalid = 1'b1;
                 while (!(s_axis_tvalid && s_axis_tready))
                     @(posedge clk);
@@ -197,6 +197,59 @@ module hd_dma_stream_bridge_tb;
                 s_axis_tdata  = 32'h0;
                 req_idx = req_idx + valid_bytes;
             end
+        end
+    endtask
+
+    task automatic reset_dut;
+        begin
+            s_axis_tdata  = 32'h0;
+            s_axis_tkeep  = 4'h0;
+            s_axis_tvalid = 1'b0;
+            s_axis_tlast  = 1'b0;
+            response_count = 0;
+            aresetn = 1'b0;
+            repeat (6) @(posedge clk);
+            aresetn = 1'b1;
+            repeat (2) @(posedge clk);
+        end
+    endtask
+
+    task automatic run_case(input bit assert_tlast, input [127:0] case_name);
+        begin
+            build_expected();
+            reset_dut();
+            send_request(assert_tlast);
+
+            fork
+                begin : wait_for_response
+                    wait (response_count == RESPONSE_BYTES);
+                end
+                begin : response_timeout
+                    repeat (4000) @(posedge clk);
+                    $display("[TB ERROR] %0s timed out: response_count=%0d state=%0d header_index=%0d step_byte_index=%0d step_store_index=%0d batch_step_count=%0d",
+                             case_name, response_count, dut.state, dut.header_index,
+                             dut.step_byte_index, dut.step_store_index, dut.batch_step_count);
+                    $fatal(1, "[TB ERROR] AXI-stream NN bridge response timeout.");
+                end
+            join_any
+            disable fork;
+            repeat (4) @(posedge clk);
+
+            for (i = 0; i < RESPONSE_BYTES; i = i + 1) begin
+                if (response_bytes[i] !== expected_bytes[i]) begin
+                    mismatch_count = mismatch_count + 1;
+                    $display("[TB ERROR] %0s byte %0d mismatch: got 0x%02x expected 0x%02x",
+                             case_name, i, response_bytes[i], expected_bytes[i]);
+                end
+            end
+
+            if (mismatch_count != 0) begin
+                $display("[TB ERROR] %0s failed with %0d response byte mismatches.",
+                         case_name, mismatch_count);
+                $fatal(1, "[TB ERROR] AXI-stream NN bridge test failed.");
+            end
+
+            $display("[TB] %0s passed.", case_name);
         end
     endtask
 
@@ -222,30 +275,14 @@ module hd_dma_stream_bridge_tb;
         post_in_arr[4] = 24'd0;
 
         build_request();
+        run_case(1'b1, "with TLAST");
 
-        repeat (6) @(posedge clk);
-        aresetn = 1'b1;
+        for (i = 0; i < RESPONSE_BYTES; i = i + 1)
+            response_bytes[i] = 8'h00;
 
-        build_expected();
-        send_request();
+        run_case(1'b0, "without TLAST");
 
-        wait (response_count == RESPONSE_BYTES);
-        repeat (4) @(posedge clk);
-
-        for (i = 0; i < RESPONSE_BYTES; i = i + 1) begin
-            if (response_bytes[i] !== expected_bytes[i]) begin
-                mismatch_count = mismatch_count + 1;
-                $display("[TB ERROR] Byte %0d mismatch: got 0x%02x expected 0x%02x",
-                         i, response_bytes[i], expected_bytes[i]);
-            end
-        end
-
-        if (mismatch_count != 0) begin
-            $display("[TB ERROR] %0d response byte mismatches detected.", mismatch_count);
-            $fatal(1, "[TB ERROR] AXI-stream NN bridge test failed.");
-        end
-
-        $display("[TB] AXI-stream NN bridge test passed.");
+        $display("[TB] AXI-stream NN bridge regression passed.");
         $finish;
     end
 

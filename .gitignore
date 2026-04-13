@@ -10,3 +10,5 @@ Vitis/workspace/
 Vitis/boot/
 Vitis/*_axi_dma*/
 Vitis/*_test_app*/
+v_old
+vivado_old

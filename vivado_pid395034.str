@@ -1,0 +1,377 @@
+/*
+
+AMD Vivado v2025.2 (64-bit) [Major: 2025, Minor: 2]
+SW Build: 6299465 on Fri Nov 14 12:34:56 MST 2025
+IP Build: 6300035 on Fri Nov 14 10:48:45 MST 2025
+IP Build: 6300035 on Fri Nov 14 10:48:45 MST 2025
+
+Process ID (PID): 395034
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Mon Apr 13 19:41:56 TRT 2026
+Time zone: 	Turkey Time (Europe/Istanbul)
+
+OS: Linux
+OS Version: 6.19.11-arch1-1
+OS Architecture: amd64
+Available processors (cores): 28
+
+Display: 0
+Screen size: 3840x2160
+Local screen bounds: x = 0, y = 0, width = 3840, height = 2103
+Screen resolution (DPI): 100
+Available screens: 2
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+OS font scaling: 100%
+Anti-Alias Enabled: false
+
+Java version: 	21.0.5 64-bit
+
+Java home: 	/home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/tps/lnx64/jre21.0.5_11
+Java executable: 	/home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/tps/lnx64/jre21.0.5_11/bin/java
+Java arguments: 	[-Dsun.java2d.pmoffscreen=false, -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2, -Dsun.java2d.xrender=false, -Dsun.java2d.uiScale.enabled=false, -Dswing.aatext=true, -XX:-UsePerfData, -Djdk.map.althashing.threshold=512, -XX:StringTableSize=4072, -XX:+UseStringDeduplication, -XX:MaxGCPauseMillis=200, -XX:ParallelGCThreads=4, -XX:+ParallelRefProcEnabled, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.base/java.nio=ALL-UNNAMED, --add-opens=java.desktop/sun.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/java.awt.event=ALL-UNNAMED, --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.base/java.nio=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.table=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED, --add-exports=java.base/sun.security.action=ALL-UNNAMED, --add-exports=java.desktop/sun.font=ALL-UNNAMED, --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED, -XX:NewSize=80m, -XX:MaxNewSize=80m, -Xms812m, -Xmx6144m, -Xss10m, -Xrs]
+Java initial memory (-Xms): 	812 MB
+Java maximum memory (-Xmx):	 6 GB
+
+User name: 	bymk
+User home directory: /home/bymk
+User working directory: /home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2
+HDI_APPROOT: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado
+RDI_DATADIR: /home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/:/home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/data
+RDI_BINDIR: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/bin
+
+Vivado preferences file: /home/bymk/.Xilinx/Vivado/2025.2/vivado.xml
+Vivado preferences directory: /home/bymk/.Xilinx/Vivado/2025.2/
+Vivado layouts directory: /home/bymk/.Xilinx/Vivado/2025.2/data/layouts
+PlanAhead jar file: 	/home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/lib/classes/planAhead.jar
+Vivado log file: 	/home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/vivado.log
+Vivado journal file: 	/home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-395034-archlinux
+Non-Default Parameters:	[]
+
+Xilinx & AMD Environment Variables
+--------------------------------------------------------------------------------------------
+RDI_APPROOT: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado
+RDI_BASEROOT: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2
+RDI_BINROOT: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/bin
+RDI_BUILD: yes
+RDI_DATADIR: :/home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/data
+RDI_INSTALLROOT: /home/bymk/Developer/vivado/vivado-install/Xilinx
+RDI_INSTALLVER: Vivado
+RDI_JAVA_PLATFORM: 
+RDI_JAVA_VERSION: 21.0.5_11
+RDI_LIBDIR: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/lib/lnx64.o/Default:/home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/lib/lnx64.o
+RDI_OPT_EXT: .o
+RDI_PATCHROOT: 
+RDI_PLATFORM: lnx64
+RDI_PREPEND_PATH: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vitis/bin:/home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/ids_lite/ISE/bin/lin64
+RDI_PROG: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/bin/unwrapped/lnx64.o/vivado
+RDI_SESSION_INFO: /home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma:_1776098505_394952
+RDI_SHARED_DATA: 
+RDI_TPS_ROOT: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/tps/lnx64
+RDI_USE_JDK21: True
+SHELL: /usr/bin/bash
+SHELL_SESSION_ID: 237e2f951893486fb135ff64a31c4a0a
+XILINX: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/ids_lite/ISE
+XILINX_DSP: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado/ids_lite/ISE
+XILINX_HLS: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vitis/
+XILINX_PLANAHEAD: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado
+XILINX_SDK: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vitis
+XILINX_VITIS: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vitis/
+XILINX_VIVADO: /home/bymk/Developer/vivado/vivado-install/Xilinx/2025.2/Vivado
+_JAVA_AWT_WM_NONREPARENTING: 1
+
+
+GUI allocated memory:	812 MB
+GUI max memory:		6,144 MB
+Engine allocated memory: 1,937 MB
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,937 MB. GUI used memory: 90 MB. Current time: 4/13/26, 7:41:57 PM TRT
+selectList(PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS, "/home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/Vivado/zedboard_axi_dma/zedboard_axi_dma.xpr", 0); // b.c (PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS)
+// Opening Vivado Project: /home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/Vivado/zedboard_axi_dma/zedboard_axi_dma.xpr. Version: Vivado v2025.2 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FLOW_ADDED
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: MSGMGR_REFRESH_MSG
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 135 MB (+139573kb) [00:00:14]
+// [Engine Memory]: 2,006 MB (+1951898kb) [00:00:14]
+// [Engine Memory]: 2,173 MB (+70163kb) [00:00:15]
+// [GUI Memory]: 154 MB (+12399kb) [00:00:15]
+// WARNING: HEventQueue.dispatchEvent() is taking  1394 ms.
+// Tcl Message: open_project /home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/Vivado/zedboard_axi_dma/zedboard_axi_dma.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// [GUI Memory]: 169 MB (+7260kb) [00:00:16]
+// Project name: zedboard_axi_dma; location: /home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/Vivado/zedboard_axi_dma; part: xc7z020clg484-1
+dismissDialog("Open Project"); // bk (Open Project Progress)
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: DG_GRAPH_GENERATED
+// TclEventType: DG_GRAPH_STALE
+// [Engine Memory]: 2,288 MB (+6045kb) [00:00:19]
+// [Engine Memory]: 2,476 MB (+77619kb) [00:00:19]
+// TclEventType: DG_GRAPH_GENERATED
+// Tcl Message: update_compile_order -fileset sources_1 
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Open Hardware Manager]", 22, true); // g (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree) - Node
+// Run Command: PAResourceCommand.PACommandNames_OPEN_HARDWARE_MANAGER
+// Tcl (Dont Echo) Command: 'rdi::info_commands get_hw_probes'
+// Tcl (Dont Echo) Command: 'load_features labtools'
+// TclEventType: LOAD_FEATURE
+// TclEventType: HW_SESSION_OPEN
+// Tcl Message: open_hw_manager 
+// HMemoryUtils.trashcanNow. Engine heap size: 2,707 MB. GUI used memory: 110 MB. Current time: 4/13/26, 7:42:12 PM TRT
+closeView(PAResourceOtoP.PAViews_PROJECT_SUMMARY, "Project Summary"); // x (PAResourceOtoP.PAViews_PROJECT_SUMMARY, PlanAheadTabProject Summary)
+dismissDialog("Open Hardware Manager"); // bk (Open Hardware Manager Progress)
+// [Engine Memory]: 3,914 MB (+1378087kb) [00:00:25]
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, "Auto Connect"); // ap (PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, auto_connect_target_menu)
+// Run Command: PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-2222] Launching hw_server... INFO: [Labtools 27-2221] Launch Output:  ****** Xilinx hw_server v2025.2   **** Build date : Oct 28 2025 at 16:07:00     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.   INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0 INFO: [Labtools 27-3417] Launching cs_server... 
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// Tcl Message: INFO: [Labtools 27-2221] Launch Output:   ******** Xilinx cs_server v2025.2.0   ****** Build date   : Nov 14 2025-02:16:52     **** Build number : 2025.2.1763075812       ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.       ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.    
+// Tcl Message: ERROR: [Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:48123 to hw_server at TCP:localhost:3121. 
+// Tcl Message: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors. 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+dismissDialog("Auto Connect"); // bk (Auto Connect Progress)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK", "Critical Messages"); // f (PAResourceAtoD.CmdMsgDialog_OK)
+dismissDialog("Critical Messages"); // a (dialog0)
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, "Auto Connect"); // ap (PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, auto_connect_target_menu)
+// Run Command: PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0 INFO: [Labtools 27-3417] Launching cs_server... 
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// Tcl Message: INFO: [Labtools 27-2221] Launch Output:   ******** Xilinx cs_server v2025.2.0   ****** Build date   : Nov 14 2025-02:16:52     **** Build number : 2025.2.1763075812       ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.       ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.    
+// Tcl Message: ERROR: [Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:60617 to hw_server at TCP:localhost:3121. 
+// Tcl Message: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors. 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+dismissDialog("Auto Connect"); // bk (Auto Connect Progress)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:60617 to hw_server at TCP:localhost:3121.", 0); // b (PAResourceAtoD.CmdMsgDialog_MESSAGES)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:60617 to hw_server at TCP:localhost:3121.", 0, false, false, false, true, false); // b (PAResourceAtoD.CmdMsgDialog_MESSAGES) - Popup Trigger
+selectMenuItem(PAResourceAtoD.CmdMsgDialog_COPY_MESSAGE, "Copy Message"); // ap (PAResourceAtoD.CmdMsgDialog_COPY_MESSAGE, Copy Message)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,924 MB. GUI used memory: 110 MB. Current time: 4/13/26, 7:42:30 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,350 MB. GUI used memory: 110 MB. Current time: 4/13/26, 7:43:10 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,350 MB. GUI used memory: 110 MB. Current time: 4/13/26, 7:43:50 PM TRT
+// Elapsed time: 114 seconds
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK", "Critical Messages"); // f (PAResourceAtoD.CmdMsgDialog_OK)
+dismissDialog("Critical Messages"); // a (dialog1)
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, "Auto Connect"); // ap (PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, auto_connect_target_menu)
+// Run Command: PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0 INFO: [Labtools 27-3417] Launching cs_server... 
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// Tcl Message: INFO: [Labtools 27-2221] Launch Output:   ******** Xilinx cs_server v2025.2.0   ****** Build date   : Nov 14 2025-02:16:52     **** Build number : 2025.2.1763075812       ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.       ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.    
+// Tcl Message: ERROR: [Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:45549 to hw_server at TCP:localhost:3121. 
+// Tcl Message: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors. 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+dismissDialog("Auto Connect"); // bk (Auto Connect Progress)
+dismissDialog("Critical Messages"); // a (dialog2)
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, "Open New Target..."); // ap (PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, open_target_wizard_menu)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD
+// HMemoryUtils.trashcanNow. Engine heap size: 2,351 MB. GUI used memory: 111 MB. Current time: 4/13/26, 7:44:31 PM TRT
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+dismissDialog("Open Server"); // bk (Open Server Progress)
+dismissDialog("Connect Server Critical Messages"); // as (dialog4)
+// 'C' command handler elapsed time: 8 seconds
+dismissDialog("Open New Hardware Target"); // ap (dialog3)
+// Elapsed time: 12 seconds
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, "Auto Connect"); // ap (PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, auto_connect_target_menu)
+// Run Command: PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-2222] Launching hw_server... INFO: [Labtools 27-2221] Launch Output:  ****** Xilinx hw_server v2025.2   **** Build date : Oct 28 2025 at 16:07:00     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.   INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0 INFO: [Labtools 27-3417] Launching cs_server... 
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// Tcl Message: INFO: [Labtools 27-2221] Launch Output:   ******** Xilinx cs_server v2025.2.0   ****** Build date   : Nov 14 2025-02:16:52     **** Build number : 2025.2.1763075812       ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.       ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.    
+// Tcl Message: ERROR: [Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:60267 to hw_server at TCP:localhost:3121. 
+// Tcl Message: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors. 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+dismissDialog("Auto Connect"); // bk (Auto Connect Progress)
+// [GUI Memory]: 186 MB (+9236kb) [00:03:07]
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK", "Critical Messages"); // f (PAResourceAtoD.CmdMsgDialog_OK)
+dismissDialog("Critical Messages"); // a (dialog5)
+// Elapsed time: 12 seconds
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, "Open New Target..."); // ap (PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, open_target_wizard_menu)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 113 MB. Current time: 4/13/26, 7:45:11 PM TRT
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+dismissDialog("Open Server"); // bk (Open Server Progress)
+dismissDialog("Connect Server Critical Messages"); // as (dialog7)
+selectComboBox(PAResourceOtoP.OpenTargetWizard_CONNECT_TO, "Connect to:", "Remote server (target is on remote machine)", 1); // d (PAResourceOtoP.OpenTargetWizard_CONNECT_TO, Connect to: )
+setText(PAResourceOtoP.OpenTargetWizard_HOST_NAME, "127.0.0.1"); // d.c (PAResourceOtoP.OpenTargetWizard_HOST_NAME)
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+dismissDialog("Open Server"); // bk (Open Server Progress)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK", "Connect Server Critical Messages"); // f (PAResourceAtoD.CmdMsgDialog_OK)
+dismissDialog("Connect Server Critical Messages"); // as (dialog8)
+selectButton("CANCEL", "Cancel", "Open New Hardware Target"); // JButton (CANCEL)
+// 'C' command handler elapsed time: 23 seconds
+dismissDialog("Open New Hardware Target"); // ap (dialog6)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 112 MB. Current time: 4/13/26, 7:45:53 PM TRT
+// Elapsed time: 33 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Open Hardware Manager, Open Target]", 23, false); // g (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_HW_TARGET
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 112 MB. Current time: 4/13/26, 7:46:33 PM TRT
+// Elapsed time: 27 seconds
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, "Auto Connect"); // ap (PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, auto_connect_target_menu)
+// Run Command: PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0 INFO: [Labtools 27-3417] Launching cs_server... 
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// Tcl Message: INFO: [Labtools 27-2221] Launch Output:   ******** Xilinx cs_server v2025.2.0   ****** Build date   : Nov 14 2025-02:16:52     **** Build number : 2025.2.1763075812       ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.       ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.    
+// Tcl Message: ERROR: [Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:41071 to hw_server at TCP:localhost:3121. 
+// Tcl Message: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors. 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+dismissDialog("Auto Connect"); // bk (Auto Connect Progress)
+dismissDialog("Critical Messages"); // a (dialog9)
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (PAResourceOtoP.ProgramDebugTab_OPEN_TARGET)
+selectMenuItem(PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, "Open New Target..."); // ap (PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, open_target_wizard_menu)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+setText(PAResourceOtoP.OpenTargetWizard_HOST_NAME, "archlinux"); // d.c (PAResourceOtoP.OpenTargetWizard_HOST_NAME)
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+dismissDialog("Open Server"); // bk (Open Server Progress)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK", "Connect Server Critical Messages"); // f (PAResourceAtoD.CmdMsgDialog_OK)
+dismissDialog("Connect Server Critical Messages"); // as (dialog11)
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+// Elapsed time: 13 seconds
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+dismissDialog("Open Server"); // bk (Open Server Progress)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:59157 to hw_server at TCP:archlinux:3121.", 0); // b (PAResourceAtoD.CmdMsgDialog_MESSAGES)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:59157 to hw_server at TCP:archlinux:3121.", 0, false, false, false, true, false); // b (PAResourceAtoD.CmdMsgDialog_MESSAGES) - Popup Trigger
+selectMenuItem(PAResourceAtoD.CmdMsgDialog_COPY_MESSAGE, "Copy Message"); // ap (PAResourceAtoD.CmdMsgDialog_COPY_MESSAGE, Copy Message)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 115 MB. Current time: 4/13/26, 7:47:14 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 115 MB. Current time: 4/13/26, 7:47:54 PM TRT
+// Elapsed time: 61 seconds
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK", "Connect Server Critical Messages"); // f (PAResourceAtoD.CmdMsgDialog_OK)
+dismissDialog("Connect Server Critical Messages"); // as (dialog12)
+setText(PAResourceOtoP.OpenTargetWizard_HOST_NAME, "127.0.0.1"); // d.c (PAResourceOtoP.OpenTargetWizard_HOST_NAME)
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'connect_hw_server' failed due to earlier errors.  
+selectButton("NEXT", "Next", "Open New Hardware Target"); // JButton (NEXT)
+dismissDialog("Open Server"); // bk (Open Server Progress)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:48183 to hw_server at TCP:127.0.0.1:3121.", 0); // b (PAResourceAtoD.CmdMsgDialog_MESSAGES)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Labtools 27-3733] Error during cs_server initialization: Failed to connect cs_server at TCP:localhost:48183 to hw_server at TCP:127.0.0.1:3121.", 0, false, false, false, true, false); // b (PAResourceAtoD.CmdMsgDialog_MESSAGES) - Popup Trigger
+selectMenuItem(PAResourceAtoD.CmdMsgDialog_COPY_MESSAGE, "Copy Message"); // ap (PAResourceAtoD.CmdMsgDialog_COPY_MESSAGE, Copy Message)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 116 MB. Current time: 4/13/26, 7:48:34 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 116 MB. Current time: 4/13/26, 7:49:14 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,352 MB. GUI used memory: 116 MB. Current time: 4/13/26, 7:49:54 PM TRT
+// Elapsed time: 104 seconds
+dismissDialog("Connect Server Critical Messages"); // as (dialog13)
+// 'C' command handler elapsed time: 204 seconds
+dismissDialog("Open New Hardware Target"); // ap (dialog10)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // ah (PAResourceItoN.MainMenuMgr_WINDOW, Window)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // ah (PAResourceItoN.MainMenuMgr_WINDOW, Window)
+selectMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // ah (PAResourceItoN.MainMenuMgr_REPORTS, Reports)
+dismissMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // ah (PAResourceItoN.MainMenuMgr_REPORTS, Reports)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // ah (PAResourceItoN.MainMenuMgr_TOOLS, Tools)
+selectMenu(RDIResourceCommand.RDICommands_CUSTOM_COMMANDS, "Custom Commands"); // am (RDIResourceCommand.RDICommands_CUSTOM_COMMANDS, Custom Commands)
+selectMenuItem(PAResourceCommand.PACommandNames_LAUNCH_VITIS_IDE, "Launch Vitis IDE"); // ap (PAResourceCommand.PACommandNames_LAUNCH_VITIS_IDE, launch_vitis_ide_menu)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // ah (PAResourceItoN.MainMenuMgr_TOOLS, Tools)
+// Run Command: PAResourceCommand.PACommandNames_LAUNCH_VITIS_IDE
+dismissDialog("Launch Vitis IDE"); // bk (Launch Vitis IDE Progress)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,353 MB. GUI used memory: 113 MB. Current time: 4/13/26, 7:50:35 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,353 MB. GUI used memory: 113 MB. Current time: 4/13/26, 7:51:15 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,353 MB. GUI used memory: 113 MB. Current time: 4/13/26, 7:51:55 PM TRT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,353 MB. GUI used memory: 113 MB. Current time: 4/13/26, 7:52:35 PM TRT

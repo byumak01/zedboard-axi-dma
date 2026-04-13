@@ -16,8 +16,13 @@ if {![string equal $ver $version_required]} {
 set origin_dir [file normalize [file dirname [info script]]]
 set src_dir [file normalize "$origin_dir/src/new"]
 set tb_file [file normalize "$origin_dir/../scripts/hd_dma_stream_bridge_tb.sv"]
+set sim_proj_dir [file normalize "$origin_dir/.sim-nn-bridge"]
 
-create_project -in_memory hd_dma_stream_bridge_sim -part xc7z020clg484-1
+if {[file exists $sim_proj_dir]} {
+  file delete -force $sim_proj_dir
+}
+
+create_project hd_dma_stream_bridge_sim $sim_proj_dir -part xc7z020clg484-1 -force
 
 add_files -fileset sim_1 -norecurse [list \
   "$src_dir/params.vh" \
@@ -38,3 +43,4 @@ launch_simulation -simset sim_1 -mode behavioral
 run all
 close_sim
 close_project
+file delete -force $sim_proj_dir
