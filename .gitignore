@@ -1,4 +1,5 @@
 Vivado/.Xil/
+.codex
 *.log
 *.jou
 Vivado/*_axi_dma/

@@ -1,5 +1,15 @@
 `timescale 1ns / 1ps
 
+// AXI-stream batch wrapper around hd_neuron.
+//
+// The input stream is a compact byte protocol:
+//   cmd(0xA5), flags, step_count[15:0], then step_count * 9 input bytes.
+//
+// The bridge stores one batch locally, executes hd_neuron one step at a time,
+// collects step_count * 13 output bytes, and then streams the packed response
+// back to DMA. The bridge is intentionally packet-oriented rather than fully
+// streaming so the PL side stays independent of USB packet timing.
+
 module hd_dma_stream_bridge #(
     parameter integer AXIS_TDATA_WIDTH = 32,
     parameter integer MAX_STEPS = 56
@@ -52,6 +62,8 @@ module hd_dma_stream_bridge #(
 
     reg [3:0] state;
 
+    // One command batch is staged locally before execution so the receive and
+    // transmit sides can be kept simple and fully decoupled.
     reg [23:0] batch_pre_in1 [0:MAX_STEPS-1];
     reg [23:0] batch_pre_in2 [0:MAX_STEPS-1];
     reg [23:0] batch_post_in [0:MAX_STEPS-1];
@@ -291,6 +303,8 @@ module hd_dma_stream_bridge #(
                 ST_PROC_LOAD: begin
                     nn_rst_reg  <= 1'b0;
                     nn_en       <= 1'b0;
+                    // Inputs are driven for one step here, then nn_en is
+                    // pulsed for exactly one cycle in ST_PROC_EN.
                     reg_pre_in1 <= batch_pre_in1[proc_step_index];
                     reg_pre_in2 <= batch_pre_in2[proc_step_index];
                     reg_post_in <= batch_post_in[proc_step_index];

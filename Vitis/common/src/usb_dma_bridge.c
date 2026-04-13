@@ -99,6 +99,9 @@
 				NN_INPUT_BYTES_PER_STEP)
 
 typedef struct {
+	/* Only one OUT packet is held at a time. This keeps ownership between
+	 * the USB buffer manager, DDR DMA buffers, and the polling main loop
+	 * straightforward while bring-up and debug are still active. */
 	volatile int RxReady;
 	volatile int TxBusy;
 	volatile u32 RxLength;
@@ -125,6 +128,9 @@ static u8 UsbDeviceMemory[USB_DEVICE_MEMORY_SIZE] ALIGNMENT_CACHELINE;
 static u8 UsbInBuffer[DMA_BUFFER_SIZE] ALIGNMENT_CACHELINE;
 #endif
 
+/* AXI DMA is the software/PL boundary: MM2S consumes DmaTxBuffer and S2MM
+ * writes DmaRxBuffer. Both live in DDR, so explicit cache maintenance is
+ * required before and after each exchange. */
 static u8 *const DmaTxBuffer = (u8 *)TX_BUFFER_BASE;
 static u8 *const DmaRxBuffer = (u8 *)RX_BUFFER_BASE;
 
@@ -594,6 +600,8 @@ static int RunDmaExchange(u32 TxLength, u32 RxLength, u8 *OutputBuffer)
 		return XST_INVALID_PARAM;
 	}
 
+	/* Arm S2MM first so the PL response path is ready before MM2S starts
+	 * feeding the request into the bridge. */
 	Status = QueueRxTransfer(&AxiDma, RxLength);
 	if (Status != XST_SUCCESS) {
 		return Status;
@@ -646,6 +654,8 @@ static void ProcessReceivedUsbPacket(void)
 		return;
 	}
 
+	/* Copy out of the USB-owned buffer before releasing it. The DMA engine
+	 * only touches the dedicated DDR staging buffers. */
 	memcpy(DmaTxBuffer, RxBuffer, Length);
 	XUsbPs_EpBufferRelease(Handle);
 
@@ -658,6 +668,8 @@ static void ProcessReceivedUsbPacket(void)
 
 	Xil_DCacheFlushRange((UINTPTR)UsbInBuffer, ResponseLength);
 
+	/* The IN endpoint callback clears TxBusy once the response packet has
+	 * been handed off completely. */
 	BridgeState.TxBusy = 1;
 	Status = XUsbPs_EpBufferSendWithZLT(&UsbInstance, 1U, UsbInBuffer,
 					    ResponseLength);

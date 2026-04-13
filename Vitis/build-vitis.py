@@ -48,6 +48,8 @@ def main() -> None:
     xsa_path = find_xsa()
 
     if WORKSPACE_DIR.exists():
+        # Recreate the workspace from scratch so platform metadata cannot lag
+        # behind a newly exported XSA.
         shutil.rmtree(WORKSPACE_DIR)
 
     client = vitis.create_client()

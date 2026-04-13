@@ -193,6 +193,9 @@ def detect_one_step_lag(hw_rows: List[dict], sim_rows: List[dict]) -> bool:
     if compare_len <= 0:
         return False
 
+    # This specific signature previously pointed at the bridge sampling
+    # hd_neuron outputs one clock too early, so flag it explicitly instead of
+    # treating it as an unstructured mass of mismatches.
     for index in range(compare_len):
         if any(hw_rows[index + 1][signal] != sim_rows[index][signal] for signal in signals):
             return False

@@ -61,6 +61,9 @@ The PL side now packetizes NN inputs into small USB/DMA-friendly batches,
 executes `hd_neuron` step-by-step, and returns the packed weights/calcium/spike
 results back to the host.
 
+For a code-oriented walkthrough of the repo structure and design decisions, see
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ## Build instructions
 
 This port does not require you to create Vivado or Vitis projects by hand.
