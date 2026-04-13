@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(grep:*)",
+      "Bash(cat /home/bymk/Developer/vivado/vivado-projects/zedboard-axi-dma/Vitis/tcl/*.tcl)"
+    ]
+  }
+}
