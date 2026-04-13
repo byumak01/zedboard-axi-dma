@@ -186,6 +186,20 @@ def compare_rows(hw_rows: List[dict], sim_rows: List[dict]) -> int:
     return mismatches
 
 
+def detect_one_step_lag(hw_rows: List[dict], sim_rows: List[dict]) -> bool:
+    signals = ("w1", "w2", "c1", "c2", "pre1_spike", "pre2_spike", "post_spike")
+    compare_len = min(len(hw_rows) - 1, len(sim_rows))
+
+    if compare_len <= 0:
+        return False
+
+    for index in range(compare_len):
+        if any(hw_rows[index + 1][signal] != sim_rows[index][signal] for signal in signals):
+            return False
+
+    return True
+
+
 def main() -> int:
     args = parse_args()
 
@@ -286,6 +300,13 @@ def main() -> int:
         if mismatches == 0:
             print("  All 2000 steps match exactly.")
         else:
+            if detect_one_step_lag(hw_rows, sim_rows):
+                print(
+                    "  Diagnosis: hardware matches the reference with a one-step lag. "
+                    "This is the bridge sampling hd_neuron outputs one clock too early. "
+                    "Rebuild and reprogram the updated FPGA design.",
+                    file=sys.stderr,
+                )
             print(f"  {mismatches}/{TOTAL_STEPS} steps have mismatches.")
             if mismatches > 10:
                 print("  (Only the first 10 mismatches are shown above)")

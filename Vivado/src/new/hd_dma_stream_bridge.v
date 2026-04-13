@@ -46,8 +46,9 @@ module hd_dma_stream_bridge #(
     localparam [3:0] ST_PROC_RESET = 4'd1;
     localparam [3:0] ST_PROC_LOAD  = 4'd2;
     localparam [3:0] ST_PROC_EN    = 4'd3;
-    localparam [3:0] ST_PROC_CAP   = 4'd4;
-    localparam [3:0] ST_SEND       = 4'd5;
+    localparam [3:0] ST_PROC_WAIT  = 4'd4;
+    localparam [3:0] ST_PROC_CAP   = 4'd5;
+    localparam [3:0] ST_SEND       = 4'd6;
 
     reg [3:0] state;
 
@@ -299,6 +300,15 @@ module hd_dma_stream_bridge #(
                 ST_PROC_EN: begin
                     nn_rst_reg <= 1'b0;
                     nn_en      <= 1'b1;
+                    state      <= ST_PROC_WAIT;
+                end
+
+                ST_PROC_WAIT: begin
+                    // hd_neuron updates its registered outputs on the cycle
+                    // after nn_en is asserted, so wait one beat before
+                    // sampling to avoid returning the previous step's values.
+                    nn_rst_reg <= 1'b0;
+                    nn_en      <= 1'b0;
                     state      <= ST_PROC_CAP;
                 end
 

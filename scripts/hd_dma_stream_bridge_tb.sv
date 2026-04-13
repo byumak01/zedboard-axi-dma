@@ -2,7 +2,7 @@
 
 module hd_dma_stream_bridge_tb;
 
-    localparam int STEP_COUNT = 5;
+    localparam int STEP_COUNT = 16;
     localparam int HDR_BYTES = 4;
     localparam int INPUT_BYTES_PER_STEP = 9;
     localparam int OUTPUT_BYTES_PER_STEP = 13;
@@ -201,12 +201,16 @@ module hd_dma_stream_bridge_tb;
     endtask
 
     task automatic reset_dut;
+        integer clear_idx;
         begin
             s_axis_tdata  = 32'h0;
             s_axis_tkeep  = 4'h0;
             s_axis_tvalid = 1'b0;
             s_axis_tlast  = 1'b0;
             response_count = 0;
+            mismatch_count = 0;
+            for (clear_idx = 0; clear_idx < RESPONSE_BYTES; clear_idx = clear_idx + 1)
+                response_bytes[clear_idx] = 8'h00;
             aresetn = 1'b0;
             repeat (6) @(posedge clk);
             aresetn = 1'b1;
@@ -254,31 +258,74 @@ module hd_dma_stream_bridge_tb;
     endtask
 
     initial begin
-        pre_in1_arr[0] = 24'd87500;
-        pre_in2_arr[0] = 24'd87500;
+        // Use the first 16 vectors from post_implementation_data.txt so the
+        // regression crosses the first spike/calcium update boundary.
+        pre_in1_arr[0] = 24'd85026;
+        pre_in2_arr[0] = 24'd85860;
         post_in_arr[0] = 24'd0;
 
-        pre_in1_arr[1] = 24'd86000;
-        pre_in2_arr[1] = 24'd33000;
+        pre_in1_arr[1] = 24'd86823;
+        pre_in2_arr[1] = 24'd83905;
         post_in_arr[1] = 24'd0;
 
-        pre_in1_arr[2] = 24'd34000;
-        pre_in2_arr[2] = 24'd33000;
-        post_in_arr[2] = 24'd53000;
+        pre_in1_arr[2] = 24'd85674;
+        pre_in2_arr[2] = 24'd84252;
+        post_in_arr[2] = 24'd0;
 
-        pre_in1_arr[3] = 24'd87500;
-        pre_in2_arr[3] = 24'd33000;
-        post_in_arr[3] = 24'd54000;
+        pre_in1_arr[3] = 24'd86240;
+        pre_in2_arr[3] = 24'd87057;
+        post_in_arr[3] = 24'd0;
 
-        pre_in1_arr[4] = 24'd34000;
-        pre_in2_arr[4] = 24'd87500;
+        pre_in1_arr[4] = 24'd85220;
+        pre_in2_arr[4] = 24'd86920;
         post_in_arr[4] = 24'd0;
+
+        pre_in1_arr[5] = 24'd87428;
+        pre_in2_arr[5] = 24'd84751;
+        post_in_arr[5] = 24'd0;
+
+        pre_in1_arr[6] = 24'd83671;
+        pre_in2_arr[6] = 24'd83667;
+        post_in_arr[6] = 24'd0;
+
+        pre_in1_arr[7] = 24'd84307;
+        pre_in2_arr[7] = 24'd86606;
+        post_in_arr[7] = 24'd0;
+
+        pre_in1_arr[8] = 24'd86944;
+        pre_in2_arr[8] = 24'd86842;
+        post_in_arr[8] = 24'd0;
+
+        pre_in1_arr[9] = 24'd83856;
+        pre_in2_arr[9] = 24'd85722;
+        post_in_arr[9] = 24'd0;
+
+        pre_in1_arr[10] = 24'd86866;
+        pre_in2_arr[10] = 24'd85879;
+        post_in_arr[10] = 24'd0;
+
+        pre_in1_arr[11] = 24'd87436;
+        pre_in2_arr[11] = 24'd86309;
+        post_in_arr[11] = 24'd0;
+
+        pre_in1_arr[12] = 24'd83970;
+        pre_in2_arr[12] = 24'd85149;
+        post_in_arr[12] = 24'd0;
+
+        pre_in1_arr[13] = 24'd87139;
+        pre_in2_arr[13] = 24'd85944;
+        post_in_arr[13] = 24'd0;
+
+        pre_in1_arr[14] = 24'd86135;
+        pre_in2_arr[14] = 24'd87182;
+        post_in_arr[14] = 24'd0;
+
+        pre_in1_arr[15] = 24'd86110;
+        pre_in2_arr[15] = 24'd83963;
+        post_in_arr[15] = 24'd0;
 
         build_request();
         run_case(1'b1, "with TLAST");
-
-        for (i = 0; i < RESPONSE_BYTES; i = i + 1)
-            response_bytes[i] = 8'h00;
 
         run_case(1'b0, "without TLAST");
 

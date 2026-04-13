@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 # Resolve paths relative to this script so it runs from anywhere
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "output")
-DATA_FILE = os.path.join(OUTPUT_DIR, "post_implementation_data.txt")
-PLOT_FILE = os.path.join(OUTPUT_DIR, "spike_data_plots.png")
+DATA_FILE = os.path.join(OUTPUT_DIR, "usb_dma_hw_output_data.txt")
+PLOT_FILE = os.path.join(OUTPUT_DIR, "dma.png")
 
 # Read the CSV file
 df = pd.read_csv(DATA_FILE, skipinitialspace=True)

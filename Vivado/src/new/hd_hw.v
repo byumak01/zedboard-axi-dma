@@ -14,10 +14,11 @@
 //   0x20  C2_OUT  R  [23:0]   calcium level 2
 //   0x24  SPIKES  R  [2:0]    {post_spike, pre2_spike, pre1_spike}
 //
-// FSM:  IDLE -> PROC (en=1 for 1 cycle) -> LATCH (capture outputs) -> DONE (set STATUS[0]) -> IDLE
+// FSM:  IDLE -> PROC (en=1 for 1 cycle) -> WAIT -> LATCH (capture outputs)
+//       -> DONE (set STATUS[0]) -> IDLE
 //
 // All outputs of hd_neuron are registered and update one cycle after en=1, so
-// they are stable when sampled in the LATCH state.
+// they are stable when sampled after the WAIT beat.
 
 module hd_hw #(
     parameter integer C_S_AXI_DATA_WIDTH = 32,
@@ -122,12 +123,13 @@ module hd_hw #(
     // start_pulse is a one-cycle strobe set by the AXI write logic and
     // consumed by the FSM in the following clock cycle.
     // -----------------------------------------------------------------------
-    localparam [1:0] FSM_IDLE  = 2'd0;
-    localparam [1:0] FSM_PROC  = 2'd1;
-    localparam [1:0] FSM_LATCH = 2'd2;
-    localparam [1:0] FSM_DONE  = 2'd3;
+    localparam [2:0] FSM_IDLE  = 3'd0;
+    localparam [2:0] FSM_PROC  = 3'd1;
+    localparam [2:0] FSM_WAIT  = 3'd2;
+    localparam [2:0] FSM_LATCH = 3'd3;
+    localparam [2:0] FSM_DONE  = 3'd4;
 
-    reg [1:0] fsm_state;
+    reg [2:0] fsm_state;
     reg       start_pulse;   // driven only by write always-block
 
     always @(posedge S_AXI_ACLK) begin
@@ -153,13 +155,17 @@ module hd_hw #(
 
                 FSM_PROC: begin
                     nn_en     <= 1'b1;       // assert en for exactly 1 cycle
+                    fsm_state <= FSM_WAIT;
+                end
+
+                FSM_WAIT: begin
+                    nn_en     <= 1'b0;
                     fsm_state <= FSM_LATCH;
                 end
 
                 FSM_LATCH: begin
-                    // en goes low; hd_neuron registers have updated.
-                    // Capture outputs -- they are stable combinational wires
-                    // reflecting the just-completed register update.
+                    // Capture outputs one cycle after deasserting en so the
+                    // hd_neuron registers have already updated.
                     nn_en      <= 1'b0;
                     reg_w1     <= nn_w1;
                     reg_w2     <= nn_w2;
