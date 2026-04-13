@@ -35,7 +35,12 @@ def find_xsa() -> Path:
         return xsa_files[0]
 
     raise FileNotFoundError(
-        "No XSA found. Run Vivado/build-bitstream.tcl first to generate and export hardware."
+        "No XSA found.\n"
+        f"Expected export path: {exported_xsa}\n"
+        "Build the hardware first:\n"
+        "  cd ../Vivado\n"
+        "  ./build.sh\n"
+        "  ./build-bitstream.sh"
     )
 
 
