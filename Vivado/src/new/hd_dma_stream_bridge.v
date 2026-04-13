@@ -174,9 +174,11 @@ module hd_dma_stream_bridge #(
 
                     m_axis_tdata = {AXIS_TDATA_WIDTH{1'b0}};
                     m_axis_tkeep = {AXIS_KEEP_WIDTH{1'b0}};
-                    for (idx = 0; idx < word_bytes; idx = idx + 1) begin
-                        m_axis_tdata[idx*8 +: 8] = out_buf[out_send_index + idx];
-                        m_axis_tkeep[idx] = 1'b1;
+                    for (idx = 0; idx < AXIS_KEEP_WIDTH; idx = idx + 1) begin
+                        if (idx < word_bytes) begin
+                            m_axis_tdata[idx*8 +: 8] = out_buf[out_send_index + idx];
+                            m_axis_tkeep[idx] = 1'b1;
+                        end
                     end
 
                     out_send_index <= out_send_index + word_bytes[15:0];
