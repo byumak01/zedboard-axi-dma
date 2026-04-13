@@ -147,6 +147,14 @@ def detach_kernel_driver(device: usb.core.Device, interface: int) -> bool:
     return False
 
 
+def looks_like_loopback_echo(request: bytes, reply: bytes) -> bool:
+    if len(reply) < len(request):
+        return False
+    if reply[: len(request)] != request:
+        return False
+    return all(byte == 0 for byte in reply[len(request):])
+
+
 def write_output_csv(path: str, rows: List[dict]) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as outfile:
@@ -231,6 +239,19 @@ def main() -> int:
 
             device.write(args.out_ep, request, timeout=args.timeout_ms)
             reply = usb_read_exact(device, args.in_ep, expected_reply, args.timeout_ms)
+
+            if looks_like_loopback_echo(request, reply):
+                print(
+                    "ERROR: The USB reply is just the original request echoed back and zero-padded. "
+                    "This usually means the FPGA is still running the old AXI DMA loopback "
+                    "bitstream instead of the NN bridge bitstream.",
+                    file=sys.stderr,
+                )
+                print(
+                    "Recreate/program the Vivado hardware design, then rerun the Vitis app.",
+                    file=sys.stderr,
+                )
+                return 3
 
             for offset, sim_row in enumerate(chunk):
                 base = offset * BYTES_PER_RESULT
