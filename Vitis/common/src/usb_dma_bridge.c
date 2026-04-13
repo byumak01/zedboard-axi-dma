@@ -87,8 +87,16 @@
 
 #define USB_DEVICE_MEMORY_SIZE (64U * 1024U)
 #define USB_BULK_MAX_PACKET 512U
-#define DMA_BUFFER_SIZE USB_BULK_MAX_PACKET
+#define DMA_BUFFER_SIZE 1024U
 #define DMA_POLL_LIMIT 10000000U
+
+#define NN_CMD_RUN_BATCH 0xA5U
+#define NN_FLAG_RESET 0x01U
+#define NN_HEADER_SIZE 4U
+#define NN_INPUT_BYTES_PER_STEP 9U
+#define NN_OUTPUT_BYTES_PER_STEP 13U
+#define NN_MAX_STEPS_PER_BATCH ((USB_BULK_MAX_PACKET - NN_HEADER_SIZE) / \
+				NN_INPUT_BYTES_PER_STEP)
 
 typedef struct {
 	volatile int RxReady;
@@ -129,8 +137,10 @@ static int SetupUsbInterrupts(XUsbPs *UsbInstancePtr,
 static void DisableUsbInterrupts(const XUsbPs_Config *UsbConfigPtr);
 static int QueueRxTransfer(XAxiDma *AxiDmaInstPtr, u32 Length);
 static int QueueTxTransfer(XAxiDma *AxiDmaInstPtr, u32 Length);
-static int WaitForTransferCompletion(XAxiDma *AxiDmaInstPtr, u32 Length);
-static int RunDmaLoopback(u32 Length, u8 *OutputBuffer);
+static int WaitForTransferCompletion(XAxiDma *AxiDmaInstPtr, u32 RxLength);
+static int DecodeBatchCommand(const u8 *Command, u32 CommandLength,
+			      u32 *ResponseLength);
+static int RunDmaExchange(u32 TxLength, u32 RxLength, u8 *OutputBuffer);
 static void ProcessReceivedUsbPacket(void);
 static void UsbIntrHandler(void *CallBackRef, u32 Mask);
 static void UsbEp0EventHandler(void *CallBackRef, u8 EpNum, u8 EventType,
@@ -146,7 +156,7 @@ int main(void)
 
 	memset(&BridgeState, 0, sizeof(BridgeState));
 
-	xil_printf("\r\n--- ZedBoard USB DMA bridge ---\r\n");
+	xil_printf("\r\n--- ZedBoard USB DMA NN bridge ---\r\n");
 
 	Status = InitDma();
 	if (Status != XST_SUCCESS) {
@@ -160,7 +170,7 @@ int main(void)
 		return XST_FAILURE;
 	}
 
-	xil_printf("Enumerate the OTG port as a USB device and send bulk data to endpoint 0x01.\r\n");
+	xil_printf("Enumerate the OTG port as a USB device and stream NN batches to endpoint 0x01.\r\n");
 
 	for (;;) {
 		ProcessReceivedUsbPacket();
@@ -383,7 +393,7 @@ static int SetupUsbInterrupts(XUsbPs *UsbInstancePtr,
 		return XST_FAILURE;
 	}
 
-	Status = XScuGic_CfgInitialize(IntcInstancePtr, IntcConfig,
+	Status = XScuGic_CfgInitialize(&IntcInstance, IntcConfig,
 				       IntcConfig->CpuBaseAddress);
 	if (Status != XST_SUCCESS) {
 		return Status;
@@ -499,7 +509,7 @@ static int QueueTxTransfer(XAxiDma *AxiDmaInstPtr, u32 Length)
 	return Status;
 }
 
-static int WaitForTransferCompletion(XAxiDma *AxiDmaInstPtr, u32 Length)
+static int WaitForTransferCompletion(XAxiDma *AxiDmaInstPtr, u32 RxLength)
 {
 	int Status;
 	u32 Timeout;
@@ -539,35 +549,67 @@ static int WaitForTransferCompletion(XAxiDma *AxiDmaInstPtr, u32 Length)
 		return Status;
 	}
 
-	Xil_DCacheInvalidateRange((UINTPTR)DmaRxBuffer, Length);
+	Xil_DCacheInvalidateRange((UINTPTR)DmaRxBuffer, RxLength);
 
 	return XST_SUCCESS;
 }
 
-static int RunDmaLoopback(u32 Length, u8 *OutputBuffer)
+static int DecodeBatchCommand(const u8 *Command, u32 CommandLength,
+			      u32 *ResponseLength)
 {
-	int Status;
+	u32 StepCount;
+	u32 ExpectedLength;
+	u32 ExpectedReplyLength;
 
-	if ((Length == 0U) || (Length > DMA_BUFFER_SIZE)) {
+	if ((Command == NULL) || (ResponseLength == NULL)) {
 		return XST_INVALID_PARAM;
 	}
 
-	Status = QueueRxTransfer(&AxiDma, Length);
+	if ((CommandLength < NN_HEADER_SIZE) || (Command[0] != NN_CMD_RUN_BATCH)) {
+		return XST_INVALID_PARAM;
+	}
+
+	StepCount = ((u32)Command[2] << 8) | (u32)Command[3];
+	if ((StepCount == 0U) || (StepCount > NN_MAX_STEPS_PER_BATCH)) {
+		return XST_INVALID_PARAM;
+	}
+
+	ExpectedLength = NN_HEADER_SIZE + (StepCount * NN_INPUT_BYTES_PER_STEP);
+	ExpectedReplyLength = StepCount * NN_OUTPUT_BYTES_PER_STEP;
+
+	if ((CommandLength != ExpectedLength) || (ExpectedReplyLength > DMA_BUFFER_SIZE)) {
+		return XST_INVALID_PARAM;
+	}
+
+	*ResponseLength = ExpectedReplyLength;
+	return XST_SUCCESS;
+}
+
+static int RunDmaExchange(u32 TxLength, u32 RxLength, u8 *OutputBuffer)
+{
+	int Status;
+
+	if ((TxLength == 0U) || (TxLength > DMA_BUFFER_SIZE) ||
+	    (RxLength == 0U) || (RxLength > DMA_BUFFER_SIZE)) {
+		return XST_INVALID_PARAM;
+	}
+
+	Status = QueueRxTransfer(&AxiDma, RxLength);
 	if (Status != XST_SUCCESS) {
 		return Status;
 	}
 
-	Status = QueueTxTransfer(&AxiDma, Length);
+	Status = QueueTxTransfer(&AxiDma, TxLength);
 	if (Status != XST_SUCCESS) {
 		return Status;
 	}
 
-	Status = WaitForTransferCompletion(&AxiDma, Length);
+	Status = WaitForTransferCompletion(&AxiDma, RxLength);
 	if (Status != XST_SUCCESS) {
 		return Status;
 	}
 
-	memcpy(OutputBuffer, DmaRxBuffer, Length);
+	memcpy(OutputBuffer, DmaRxBuffer, RxLength);
 	return XST_SUCCESS;
 }
 
@@ -575,6 +617,7 @@ static void ProcessReceivedUsbPacket(void)
 {
 	int Status;
 	u32 Length;
+	u32 ResponseLength;
 	u32 Handle;
 	u8 *RxBuffer;
 
@@ -591,7 +634,14 @@ static void ProcessReceivedUsbPacket(void)
 	BridgeState.RxHandle = 0U;
 	BridgeState.RxBuffer = NULL;
 
-	if ((RxBuffer == NULL) || (Length == 0U) || (Length > DMA_BUFFER_SIZE)) {
+	if ((RxBuffer == NULL) || (Length == 0U) || (Length > USB_BULK_MAX_PACKET)) {
+		XUsbPs_EpBufferRelease(Handle);
+		return;
+	}
+
+	Status = DecodeBatchCommand(RxBuffer, Length, &ResponseLength);
+	if (Status != XST_SUCCESS) {
+		xil_printf("Invalid NN batch: len=%d status=%d\r\n", (int)Length, Status);
 		XUsbPs_EpBufferRelease(Handle);
 		return;
 	}
@@ -599,17 +649,18 @@ static void ProcessReceivedUsbPacket(void)
 	memcpy(DmaTxBuffer, RxBuffer, Length);
 	XUsbPs_EpBufferRelease(Handle);
 
-	Status = RunDmaLoopback(Length, UsbInBuffer);
+	Status = RunDmaExchange(Length, ResponseLength, UsbInBuffer);
 	if (Status != XST_SUCCESS) {
-		xil_printf("DMA loopback failed for %d bytes: %d\r\n",
-			   (int)Length, Status);
+		xil_printf("DMA NN exchange failed for tx=%d rx=%d bytes: %d\r\n",
+			   (int)Length, (int)ResponseLength, Status);
 		return;
 	}
 
-	Xil_DCacheFlushRange((UINTPTR)UsbInBuffer, Length);
+	Xil_DCacheFlushRange((UINTPTR)UsbInBuffer, ResponseLength);
 
 	BridgeState.TxBusy = 1;
-	Status = XUsbPs_EpBufferSendWithZLT(&UsbInstance, 1U, UsbInBuffer, Length);
+	Status = XUsbPs_EpBufferSendWithZLT(&UsbInstance, 1U, UsbInBuffer,
+					    ResponseLength);
 	if (Status != XST_SUCCESS) {
 		BridgeState.TxBusy = 0;
 		xil_printf("USB IN transfer failed: %d\r\n", Status);
@@ -688,7 +739,7 @@ static void UsbEp1OutEventHandler(void *CallBackRef, u8 EpNum, u8 EventType,
 	}
 
 	if ((BridgeState.RxReady != 0) || (BufferLen == 0U) ||
-	    (BufferLen > DMA_BUFFER_SIZE)) {
+	    (BufferLen > USB_BULK_MAX_PACKET)) {
 		BridgeState.DroppedPackets++;
 		XUsbPs_EpBufferRelease(Handle);
 		return;

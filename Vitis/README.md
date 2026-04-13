@@ -31,7 +31,7 @@ The build script does four things:
 1. Creates a fresh Vitis workspace in `Vitis/workspace`.
 2. Creates a standalone platform component from the exported XSA.
 3. Adds a `ps7_cortexa9_0` standalone domain.
-4. Creates an empty application, imports `common/src/xaxidma_example_sg_poll.c`, and builds it.
+4. Creates an empty application, imports the USB/DMA NN bridge sources from `common/src/`, and builds them.
 
 ### Run the application
 
@@ -40,3 +40,6 @@ The build script does four things:
 3. Open Vitis with the workspace at `Vitis/workspace`.
 4. Program the FPGA with the bitstream from the exported XSA.
 5. Run the `zedboard_axi_dma_test_app` application.
+
+The current application is the USB/DMA neural-network bridge in
+`common/src/usb_dma_bridge.c`, not the original AXI DMA loopback example.

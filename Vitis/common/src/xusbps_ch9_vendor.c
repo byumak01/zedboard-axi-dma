@@ -213,10 +213,10 @@ u32 XUsbPs_Ch9SetupStrDescReply(u8 *BufPtr, u32 BufLen, u8 Index)
 	static const char *StringList[] = {
 		"UNUSED",
 		"AMD Xilinx Demo",
-		"ZedBoard USB DMA Bridge",
+		"ZedBoard USB DMA NN Bridge",
 		"00000001",
-		"DMA Loopback Config",
-		"Vendor Bulk Bridge",
+		"Neural Network Config",
+		"Vendor Bulk NN Bridge",
 	};
 
 	if ((BufPtr == NULL) || (Index >= (sizeof(StringList) / sizeof(StringList[0])))) {

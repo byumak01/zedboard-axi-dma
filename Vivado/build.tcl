@@ -93,6 +93,24 @@ current_run -implementation [get_runs impl_1]
 
 puts "INFO: Project created:${design_name}"
 
+# Add custom RTL before the block design is sourced so module references are available.
+set nn_src_dir [file normalize "$origin_dir/src/new"]
+set nn_sources [list \
+  "$nn_src_dir/params.vh" \
+  "$nn_src_dir/simplified_neuron.v" \
+  "$nn_src_dir/calcium_update.v" \
+  "$nn_src_dir/weight_update.v" \
+  "$nn_src_dir/synapse.v" \
+  "$nn_src_dir/hd_neuron.v" \
+  "$nn_src_dir/hd_dma_stream_bridge.v" \
+  "$nn_src_dir/hd_hw.v" \
+]
+
+add_files -fileset sources_1 -norecurse $nn_sources
+set_property file_type {Verilog Header} [get_files "$nn_src_dir/params.vh"]
+set_property include_dirs [list $nn_src_dir] [get_filesets sources_1]
+set_property include_dirs [list $nn_src_dir] [get_filesets sim_1]
+
 # Create block design
 source $origin_dir/src/bd/design_1.tcl
 
